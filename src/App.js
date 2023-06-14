@@ -10,12 +10,14 @@ import NextButton from "./NextButton";
 import { useEffect } from "react";
 import Progress from "./Progress";
 import FinishScreen from "./FinishScreen";
+import Timer from "./Timer";
 
 const initialState = {
   questions: [],
   status: "loading",
   index: 0,
   points: 0,
+  secondsRemaining: 10,
 };
 
 function reducer(state, action) {
@@ -45,6 +47,9 @@ function reducer(state, action) {
 
     case "finish":
       return { ...state, status: "finished" };
+
+    case "restart":
+      return { ...initialState, status: "ready", questions: state.questions };
 
     default:
       return state;
@@ -84,6 +89,7 @@ function App() {
               dispatch={dispatch}
               answer={state.answer}
             />
+            <Timer dispatch={dispatch} />
             <NextButton
               dispatch={dispatch}
               answer={state.answer}
@@ -97,6 +103,7 @@ function App() {
             points={state.points}
             index={state.index}
             numQuestions={questionsLength}
+            dispatch={dispatch}
           />
         )}
       </Main>
